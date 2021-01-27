@@ -239,7 +239,15 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-	throw new Error("Not implemented");
+	const input = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz?! ';
+	const output = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm?! ';
+
+	var encoded = '';
+	for (var i = 0; i < str.length; i++) {
+		const index = input.indexOf(str[i]);
+		encoded += output[index];
+	}
+	return encoded;
 }
 
 /**
@@ -256,7 +264,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-	throw new Error("Not implemented");
+	return toString.call(value) === '[object String]';
 }
 
 /**
@@ -284,8 +292,14 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-	throw new Error("Not implemented");
+	var deck = ['A♣', '2♣', '3♣', '4♣', '5♣', '6♣', '7♣', '8♣', '9♣', '10♣', 'J♣', 'Q♣', 'K♣',
+		'A♦', '2♦', '3♦', '4♦', '5♦', '6♦', '7♦', '8♦', '9♦', '10♦', 'J♦', 'Q♦', 'K♦',
+		'A♥', '2♥', '3♥', '4♥', '5♥', '6♥', '7♥', '8♥', '9♥', '10♥', 'J♥', 'Q♥', 'K♥',
+		'A♠', '2♠', '3♠', '4♠', '5♠', '6♠', '7♠', '8♠', '9♠', '10♠', 'J♠', 'Q♠', 'K♠'];
+	return deck.indexOf(value);
 }
+
+console.log(getCardId('2♣'));
 
 module.exports = {
 	concatenateStrings: concatenateStrings,
