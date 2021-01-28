@@ -84,16 +84,8 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-	var milliseconds = endDate.getMilliseconds() - startDate.getMilliseconds();
-	var seconds = endDate.getSeconds() - startDate.getSeconds();
-	var minutes = endDate.getMinutes() - startDate.getMinutes();
-	var hours = endDate.getHours() - startDate.getHours();
-
-	var time = endDate - startDate;
-	var result = new Date().setTime(time);
-	return new Date().setHours(hours);
+	return new Date(endDate - startDate).toISOString().slice(11, -1);
 }
-console.log(timeSpanToString(new Date(2000, 1, 1, 10, 0, 0), new Date(2000, 1, 1, 11, 0, 0)));
 
 /**
  * Returns the angle (in radians) between the hands of an analog clock for the specified Greenwich time.
@@ -109,7 +101,17 @@ console.log(timeSpanToString(new Date(2000, 1, 1, 10, 0, 0), new Date(2000, 1, 1
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
 function angleBetweenClockHands(date) {
-	throw new Error("Not implemented");
+	var minutes = new Date(date).toTimeString().slice(3, 5);
+	var hours = new Date(date).toTimeString().slice(0, 2) - 3;
+	hours = hours % 12;
+
+	var degrees = Math.abs(0.5 * (60 * hours - 11 * minutes));
+	console.log("degrees = " + degrees);
+
+	if (degrees > 180) {
+		return Math.abs(((360 - degrees) * Math.PI) / 180);
+	}
+	return Math.abs((degrees * Math.PI) / 180);
 }
 
 module.exports = {
