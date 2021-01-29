@@ -106,8 +106,6 @@ function angleBetweenClockHands(date) {
 	hours = hours % 12;
 
 	var degrees = Math.abs(0.5 * (60 * hours - 11 * minutes));
-	console.log("degrees = " + degrees);
-
 	if (degrees > 180) {
 		return Math.abs(((360 - degrees) * Math.PI) / 180);
 	}
