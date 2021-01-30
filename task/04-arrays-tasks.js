@@ -49,7 +49,6 @@ function generateOdds(len) {
 
 	return newArr;
 }
-console.log(generateOdds(7));
 /**
  * Returns the doubled array - elements of the specified array are repeated twice using original order
  *
@@ -502,7 +501,38 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-	throw new Error("Not implemented");
+	let groupedValues = array.reduce(function (accum, item) {
+		console.log("keySelector(item) : " + keySelector(item));
+		console.log("valueSelector(item): " + valueSelector(item));
+
+		console.log("Object.keys(accum): " + Object.keys(accum));
+		console.log("Object.values(accum): " + Object.values(accum));
+
+		console.log("accum[keySelector(item)]1: " + accum[keySelector(item)]);
+
+		accum[keySelector(item)] = accum[keySelector(item)] || [];
+		console.log("Wrote accum[keySelector(item)] || [] to accum[keySelector(item)]");
+		console.log("accum[keySelector(item)]2: " + accum[keySelector(item)]);
+		console.log("Object.keys(accum): " + Object.keys(accum));
+		console.log("Object.values(accum): " + Object.values(accum));
+
+		accum[keySelector(item)].push(valueSelector(item));
+		console.log("\nAfter push:");
+		console.log("Object.keys(accum): " + Object.keys(accum));
+		console.log("Object.values(accum): " + Object.values(accum));
+
+		console.log("\n\nNew iteration:");
+		return accum;
+	}, {});
+
+	console.log("\n\nAfter all iterations:");
+	console.log("Object.keys(groupedValues): " + Object.keys(groupedValues));
+
+	return Object.keys(groupedValues).map(function (key) {
+		console.log("key: " + key);
+		console.log("groupedValues[key]: " + groupedValues[key]);
+		return [key, groupedValues[key]];
+	});
 }
 
 /**
@@ -517,7 +547,9 @@ function group(array, keySelector, valueSelector) {
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-	throw new Error("Not implemented");
+	return arr.reduce((accum, currValue) => {
+		return accum.concat(childrenSelector(currValue));
+	}, []);
 }
 
 /**
@@ -533,7 +565,9 @@ function selectMany(arr, childrenSelector) {
  *   [[[ 1, 2, 3]]], [ 0, 0, 1 ]      => 2        (arr[0][0][1])
  */
 function getElementByIndexes(arr, indexes) {
-	throw new Error("Not implemented");
+	return indexes.reduce(function (accum, item) {
+		return accum.find((elem, index) => index === item);
+	}, arr);
 }
 
 /**
@@ -555,8 +589,17 @@ function getElementByIndexes(arr, indexes) {
  *
  */
 function swapHeadAndTail(arr) {
-	throw new Error("Not implemented");
+	let head = Math.floor(arr.length / 2);
+	let tail = Math.ceil(arr.length / 2);
+
+	let arrHead = arr.slice(0, head);
+	let arrMiddle = arr.slice(head, tail);
+	let arrTail = arr.slice(tail);
+
+	return arrTail.concat(arrMiddle.concat(arrHead));
 }
+
+console.log(swapHeadAndTail([1, 2, 3, 4, 5]));
 
 module.exports = {
 	findElement: findElement,
