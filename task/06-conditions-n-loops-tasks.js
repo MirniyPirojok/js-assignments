@@ -124,7 +124,6 @@ function isTriangle(a, b, c) {
  *
  */
 function doRectanglesOverlap(rect1, rect2) {
-	console.log(rect1.top);
 	let rect1XRange = rect1.top + rect1.width;
 	let rect1YRange = rect1.left + rect1.height;
 
@@ -170,8 +169,6 @@ function isInsideCircle(circle, point) {
 	return distance > 0;
 }
 
-console.log(isInsideCircle({ center: { x: 0, y: 0 }, radius: 10 }, { x: 0, y: 0 }));
-
 /**
  * Returns the first non repeated char in the specified strings otherwise returns null.
  *
@@ -184,7 +181,13 @@ console.log(isInsideCircle({ center: { x: 0, y: 0 }, radius: 10 }, { x: 0, y: 0 
  *   'entente' => null
  */
 function findFirstSingleChar(str) {
-	throw new Error("Not implemented");
+	for (let i = 0; i < str.length; i++) {
+		let current = str.charAt(i);
+		if (str.indexOf(current) == str.lastIndexOf(current)) {
+			return current;
+		}
+	}
+	return null;
 }
 
 /**
@@ -209,7 +212,17 @@ function findFirstSingleChar(str) {
  *
  */
 function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
-	throw new Error("Not implemented");
+	let start = isStartIncluded ? "[" : "(";
+	let end = isEndIncluded ? "]" : ")";
+
+	let smaller = a;
+	let bigger = b;
+	if (a > b) {
+		smaller = b;
+		bigger = a;
+	}
+
+	return start + smaller + ", " + bigger + end;
 }
 
 /**
@@ -225,7 +238,7 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-	throw new Error("Not implemented");
+	return str.split("").reverse().join("");
 }
 
 /**
@@ -241,7 +254,7 @@ function reverseString(str) {
  *   34143 => 34143
  */
 function reverseInteger(num) {
-	throw new Error("Not implemented");
+	return num.toString().split("").reverse().join("");
 }
 
 /**
@@ -265,7 +278,20 @@ function reverseInteger(num) {
  *   4916123456789012 => false
  */
 function isCreditCardNumber(ccn) {
-	throw new Error("Not implemented");
+	let cardNum = ccn.toString();
+	let sum = 0;
+	let doubleDigit = false;
+
+	for (let i = cardNum.length - 1; i >= 0; i--) {
+		let digit = +cardNum[i];
+		if (doubleDigit) {
+			digit *= 2;
+			if (digit > 9) digit -= 9;
+		}
+		sum += digit;
+		doubleDigit = !doubleDigit;
+	}
+	return sum % 10 == 0;
 }
 
 /**
@@ -283,7 +309,18 @@ function isCreditCardNumber(ccn) {
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
 function getDigitalRoot(num) {
-	throw new Error("Not implemented");
+	let sum = num;
+	let digits = [];
+
+	do {
+		digits = sum.toString().split("");
+		sum = 0;
+		for (let d of digits) {
+			let newNum = parseInt(d);
+			sum += newNum;
+		}
+	} while (sum > 9);
+	return sum;
 }
 
 /**
@@ -308,7 +345,28 @@ function getDigitalRoot(num) {
  *   '{[(<{[]}>)]}' = true
  */
 function isBracketsBalanced(str) {
-	throw new Error("Not implemented");
+	let stack = [];
+	let backetsMap = {
+		"(": ")",
+		"[": "]",
+		"{": "}",
+		"<": ">",
+	};
+
+	for (let i = 0; i < str.length; i++) {
+		if (str[i] === "(" || str[i] === "[" || str[i] === "{" || str[i] === "<") {
+			stack.push(str[i]);
+		} else {
+			let last = stack.pop();
+			if (str[i] !== backetsMap[last]) {
+				return false;
+			}
+		}
+	}
+	if (stack.length != 0) {
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -343,7 +401,55 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-	throw new Error("Not implemented");
+	let start = new Date(startDate);
+	let end = new Date(endDate);
+	let difference = end - start;
+
+	let dayDiff = difference / 1000 / 60 / 60 / 24;
+	let hourDiff = difference / 1000 / 60 / 60;
+	let minuteDiff = difference / 1000 / 60;
+	let secondDiff = difference / 1000;
+
+	if (dayDiff > 546) {
+		return Math.round(dayDiff / 365) + " years ago";
+	} else if (345 < dayDiff && dayDiff <= 545) {
+		return "a year ago";
+	} else if (45 < dayDiff && dayDiff <= 345) {
+		return Math.round(dayDiff / 30) + " months ago";
+	} else if (25 < dayDiff && dayDiff <= 45) {
+		return "a month ago";
+	} else if (36 < hourDiff && dayDiff <= 25) {
+		let temp = 0;
+		if (dayDiff < 4.5) {
+			temp = Math.round(dayDiff);
+		} else temp = Math.floor(dayDiff);
+		return temp + " days ago";
+	} else if (22 < hourDiff && hourDiff <= 36) {
+		return "a day ago";
+	} else if (90 < minuteDiff && hourDiff <= 22) {
+		let temp = 0;
+		if (hourDiff > 1.5) {
+			temp = Math.round(hourDiff);
+		}
+		if (hourDiff === 4.5) {
+			temp = Math.floor(hourDiff);
+		}
+		return temp + " hours ago";
+	} else if (45 < minuteDiff && minuteDiff <= 90) {
+		return "an hour ago";
+	} else if (90 < secondDiff && minuteDiff <= 45) {
+		let temp = 0;
+		if (minuteDiff > 5) {
+			temp = Math.floor(minuteDiff);
+		} else {
+			temp = Math.round(minuteDiff);
+		}
+		return temp + " minutes ago";
+	} else if (45 < secondDiff && secondDiff <= 90) {
+		return "a minute ago";
+	} else {
+		return "a few seconds ago";
+	}
 }
 
 /**
