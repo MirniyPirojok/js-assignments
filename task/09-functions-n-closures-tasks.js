@@ -141,7 +141,15 @@ function retry(func, attempts) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(func, logFunc) {}
+function logger(func, logFunc) {
+	return function () {
+		var args = JSON.stringify(Array.from(arguments)).slice(1, -1);
+		logFunc(func.name + "(" + args + ") starts");
+		var result = func(...arguments);
+		logFunc(func.name + "(" + args + ") ends");
+		return result;
+	};
+}
 
 /**
  * Return the function with partial applied arguments
@@ -177,7 +185,9 @@ function partialUsingArguments(fn) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-	throw new Error("Not implemented");
+	return function () {
+		return startFrom++;
+	};
 }
 
 module.exports = {
