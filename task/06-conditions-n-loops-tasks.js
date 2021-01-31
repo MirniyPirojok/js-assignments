@@ -472,7 +472,14 @@ function timespanToHumanString(startDate, endDate) {
  *    365, 10 => '365'
  */
 function toNaryString(num, n) {
-	throw new Error("Not implemented");
+	let radixSource = "0123456789";
+	let result = "";
+	let arr = radixSource.slice(0, n);
+	while (num > 0) {
+		result = result + arr[num % n];
+		num = Math.floor(num / n);
+	}
+	return result.split("").reverse().join("");
 }
 
 /**
@@ -487,8 +494,26 @@ function toNaryString(num, n) {
  *   ['/web/assets/style.css', '/.bin/mocha',  '/read.me'] => '/'
  *   ['/web/favicon.ico', '/web-scripts/dump', '/webalizer/logs'] => '/'
  */
+
 function getCommonDirectoryPath(pathes) {
-	throw new Error("Not implemented");
+	let k = pathes[0].length;
+	for (let i = 1; i < pathes.length; i++) {
+		k = Math.min(k, pathes[i].length);
+		for (let j = 0; j < k; j++) {
+			if (pathes[i][j] != pathes[0][j]) {
+				k = j;
+				break;
+			}
+		}
+	}
+	let prefix = pathes[0].substring(0, k).split("");
+
+	for (let i = prefix.length - 1; i > 0; i--) {
+		if (prefix[i] === "/") {
+			return prefix.join("");
+		} else prefix.pop();
+	}
+	return prefix.join("");
 }
 
 /**
@@ -510,7 +535,18 @@ function getCommonDirectoryPath(pathes) {
  *
  */
 function getMatrixProduct(m1, m2) {
-	throw new Error("Not implemented");
+	let result = [];
+	for (let i = 0; i < m1.length; i++) {
+		result[i] = [];
+		for (let j = 0; j < m2[0].length; j++) {
+			let sum = 0;
+			for (let k = 0; k < m1[0].length; k++) {
+				sum += m1[i][k] * m2[k][j];
+			}
+			result[i][j] = sum;
+		}
+	}
+	return result;
 }
 
 /**
@@ -543,8 +579,33 @@ function getMatrixProduct(m1, m2) {
  *    [    ,   ,    ]]
  *
  */
-function evaluateTicTacToePosition(position) {
-	throw new Error("Not implemented");
+
+function evaluateTicTacToePosition(arr) {
+	function Eq(a, b, c) {
+		return a != "O" && a == b && a == c && a != undefined;
+	}
+	for (let i = 0; i < 3; i++) {
+		// check cols
+		if (Eq(arr[0][i], arr[1][i], arr[2][i])) {
+			return arr[0][i];
+		}
+
+		// check rows
+		if (Eq(arr[i][0], arr[i][1], arr[i][2])) {
+			return arr[i][0];
+		}
+	}
+
+	// check diagonal
+	if (Eq(arr[0][0], arr[1][1], arr[2][2])) {
+		return arr[0][0];
+	}
+
+	if (Eq(arr[0][2], arr[1][1], arr[2][0])) {
+		return arr[0][2];
+	}
+
+	return undefined;
 }
 
 module.exports = {
