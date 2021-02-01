@@ -49,10 +49,6 @@ function generateOdds(len) {
 
 	return newArr;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 3205d9b24f8d5697a623d6e1280af82d868741f1
 /**
  * Returns the doubled array - elements of the specified array are repeated twice using original order
  *
@@ -573,47 +569,15 @@ function distinct(arr) {
  *   }
  */
 function group(array, keySelector, valueSelector) {
-<<<<<<< HEAD
-	var groupByValues = array.reduce(function (accum, item) {
-		accum[keySelector(item)] = accum[keySelector(item)] || [];
-		accum[keySelector(item)].push(valueSelector(item));
-		return accum;
-	}, {});
-	return Object.keys(groupByValues).map((key) => [key, groupByValues[key]]);
-=======
 	let groupedValues = array.reduce(function (accum, item) {
-		console.log("keySelector(item) : " + keySelector(item));
-		console.log("valueSelector(item): " + valueSelector(item));
-
-		console.log("Object.keys(accum): " + Object.keys(accum));
-		console.log("Object.values(accum): " + Object.values(accum));
-
-		console.log("accum[keySelector(item)]1: " + accum[keySelector(item)]);
-
 		accum[keySelector(item)] = accum[keySelector(item)] || [];
-		console.log("Wrote accum[keySelector(item)] || [] to accum[keySelector(item)]");
-		console.log("accum[keySelector(item)]2: " + accum[keySelector(item)]);
-		console.log("Object.keys(accum): " + Object.keys(accum));
-		console.log("Object.values(accum): " + Object.values(accum));
-
 		accum[keySelector(item)].push(valueSelector(item));
-		console.log("\nAfter push:");
-		console.log("Object.keys(accum): " + Object.keys(accum));
-		console.log("Object.values(accum): " + Object.values(accum));
-
-		console.log("\n\nNew iteration:");
 		return accum;
 	}, {});
-
-	console.log("\n\nAfter all iterations:");
-	console.log("Object.keys(groupedValues): " + Object.keys(groupedValues));
 
 	return Object.keys(groupedValues).map(function (key) {
-		console.log("key: " + key);
-		console.log("groupedValues[key]: " + groupedValues[key]);
 		return [key, groupedValues[key]];
 	});
->>>>>>> 3205d9b24f8d5697a623d6e1280af82d868741f1
 }
 
 /**
