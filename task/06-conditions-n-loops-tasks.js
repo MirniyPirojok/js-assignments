@@ -410,41 +410,28 @@ function timespanToHumanString(startDate, endDate) {
 	let minuteDiff = difference / 1000 / 60;
 	let secondDiff = difference / 1000;
 
+	function myRound(num) {
+		return num - Math.floor(num) > 0.5 ? Math.ceil(num) : Math.floor(num);
+	}
+
 	if (dayDiff > 546) {
 		return Math.round(dayDiff / 365) + " years ago";
 	} else if (345 < dayDiff && dayDiff <= 545) {
 		return "a year ago";
 	} else if (45 < dayDiff && dayDiff <= 345) {
-		return Math.round(dayDiff / 30) + " months ago";
+		return myRound(dayDiff / 30) + " months ago";
 	} else if (25 < dayDiff && dayDiff <= 45) {
 		return "a month ago";
 	} else if (36 < hourDiff && dayDiff <= 25) {
-		let temp = 0;
-		if (dayDiff < 4.5) {
-			temp = Math.round(dayDiff);
-		} else temp = Math.floor(dayDiff);
-		return temp + " days ago";
+		return myRound(dayDiff) + " days ago";
 	} else if (22 < hourDiff && hourDiff <= 36) {
 		return "a day ago";
 	} else if (90 < minuteDiff && hourDiff <= 22) {
-		let temp = 0;
-		if (hourDiff > 1.5) {
-			temp = Math.round(hourDiff);
-		}
-		if (hourDiff === 4.5) {
-			temp = Math.floor(hourDiff);
-		}
-		return temp + " hours ago";
+		return myRound(hourDiff) + " hours ago";
 	} else if (45 < minuteDiff && minuteDiff <= 90) {
 		return "an hour ago";
 	} else if (90 < secondDiff && minuteDiff <= 45) {
-		let temp = 0;
-		if (minuteDiff > 5) {
-			temp = Math.floor(minuteDiff);
-		} else {
-			temp = Math.round(minuteDiff);
-		}
-		return temp + " minutes ago";
+		return myRound(minuteDiff) + " minutes ago";
 	} else if (45 < secondDiff && secondDiff <= 90) {
 		return "a minute ago";
 	} else {
