@@ -401,41 +401,40 @@ function isBracketsBalanced(str) {
  *
  */
 function timespanToHumanString(startDate, endDate) {
-	let start = new Date(startDate);
-	let end = new Date(endDate);
-	let difference = end - start;
+	let difference = endDate - startDate;
 
-	let dayDiff = difference / 1000 / 60 / 60 / 24;
-	let hourDiff = difference / 1000 / 60 / 60;
-	let minuteDiff = difference / 1000 / 60;
 	let secondDiff = difference / 1000;
+	let minuteDiff = secondDiff / 60;
+	let hourDiff = minuteDiff / 60;
+	let dayDiff = hourDiff / 24;
 
 	function myRound(num) {
 		return num - Math.floor(num) > 0.5 ? Math.ceil(num) : Math.floor(num);
 	}
 
-	if (dayDiff > 546) {
-		return Math.round(dayDiff / 365) + " years ago";
-	} else if (345 < dayDiff && dayDiff <= 545) {
-		return "a year ago";
-	} else if (45 < dayDiff && dayDiff <= 345) {
-		return myRound(dayDiff / 30) + " months ago";
-	} else if (25 < dayDiff && dayDiff <= 45) {
-		return "a month ago";
-	} else if (36 < hourDiff && dayDiff <= 25) {
-		return myRound(dayDiff) + " days ago";
-	} else if (22 < hourDiff && hourDiff <= 36) {
-		return "a day ago";
-	} else if (90 < minuteDiff && hourDiff <= 22) {
-		return myRound(hourDiff) + " hours ago";
-	} else if (45 < minuteDiff && minuteDiff <= 90) {
-		return "an hour ago";
-	} else if (90 < secondDiff && minuteDiff <= 45) {
-		return myRound(minuteDiff) + " minutes ago";
-	} else if (45 < secondDiff && secondDiff <= 90) {
-		return "a minute ago";
-	} else {
-		return "a few seconds ago";
+	switch (true) {
+		case dayDiff > 546:
+			return Math.round(dayDiff / 365) + " years ago";
+		case dayDiff > 345:
+			return "a year ago";
+		case dayDiff > 45:
+			return myRound(dayDiff / 30) + " months ago";
+		case 25 < dayDiff:
+			return "a month ago";
+		case 36 < hourDiff:
+			return myRound(dayDiff) + " days ago";
+		case 22 < hourDiff:
+			return "a day ago";
+		case 90 < minuteDiff:
+			return myRound(hourDiff) + " hours ago";
+		case 45 < minuteDiff:
+			return "an hour ago";
+		case 90 < secondDiff:
+			return myRound(minuteDiff) + " minutes ago";
+		case 45 < secondDiff:
+			return "a minute ago";
+		default:
+			return "a few seconds ago";
 	}
 }
 
